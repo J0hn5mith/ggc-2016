@@ -13,6 +13,7 @@ Segment.prototype.draw = function(context){
 
 var Path = function(){
     this.segments = [ ];
+    this.level = 0;
 }
 
 Path.prototype.draw = function(context){

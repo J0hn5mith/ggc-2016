@@ -1,3 +1,4 @@
+BASE_LINE = 500;
 function IngameState() {
 
     // just for demonstration purposes:
@@ -20,6 +21,9 @@ function IngameState() {
     this.activePath;
     this.rotatingLine = new RotatingLine();
     this.attachmentState = false; // false = left, true = right
+
+    this.levels = new LevelComposite();
+    this.currentLevel = 0;
 
 
     this.init = function() {
@@ -119,6 +123,31 @@ function IngameState() {
         c.lineTo(300, 500);
         c.stroke();
 
+        this.drawLevels(c);
+
+    };
+
+    this.drawLevels = function(context) {
+        if(this.levels.levels.length == 0){
+            return;
+        }
+        var totalHeight = 0;
+
+            context.setLineDash([5, 15]);
+            context.beginPath();
+            context.moveTo(0,BASE_LINE);
+            context.lineTo(game.WIDTH, BASE_LINE);
+            context.stroke();
+
+        for(var level of this.levels.levels){
+            context.beginPath();
+            totalHeight += level.height;
+            context.moveTo(0,BASE_LINE-totalHeight);
+            context.lineTo(game.WIDTH, BASE_LINE-totalHeight);
+            context.stroke();
+
+        }
+            context.setLineDash([0]);
     };
 
     this.clear = function() {
@@ -132,11 +161,12 @@ function IngameState() {
             this.rotatingLine.center,
             this.rotatingLine.tip
         );
-
-        this.rotatingLine.tip = this.rotatingLine.center;
-        this.rotatingLine.center = tip;
-        this.rotatingLine.progress = 0;
-
+        if(this.rotatingLine.tip.y < BASE_LINE - this.levels.heightOfLevel(this.currentLevel)){
+            this.activePath.level = this.currentLevel + 1;
+        }
+        if (this.pathLeft.level > this.currentLevel && this.pathRight.level > this.currentLevel){
+            this.currentLevel += 1;
+        }
         this.toggleAttachment();
     };
 
@@ -147,6 +177,10 @@ function IngameState() {
             this.attachToRight();
         }
         this.activePath.angle = Math.PI
+
+        if(this.activePath.level > this.currentLevel){
+            this.toggleAttachment();
+        }
 
     }
 
