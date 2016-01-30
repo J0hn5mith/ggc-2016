@@ -6,10 +6,18 @@ function Background() {
     };
 
 
-    this.draw = function() {
-        var grad = c.createLinearGradient(0, -1000, 0, 50);
-        grad.addColorStop(0,"black");
-        grad.addColorStop(1,"white");
+    this.drawSky = function() {
+        var grad = c.createLinearGradient(0, -2000, 0, 50);
+        grad.addColorStop(0, "#003");
+        grad.addColorStop(0.5, "#09f");
+        grad.addColorStop(1, "#9cf");
+
+        c.fillStyle = grad;
+        c.fillRect(0, -500, 600, 600);
+    };
+
+
+    this.drawHill = function() {
 
         c.translate(0, -500);
 

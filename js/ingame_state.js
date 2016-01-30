@@ -1,7 +1,6 @@
 function IngameState() {
 
     this.pathLeft = new Path();
-    this.pathLeftOriginal = new Path();
     this.pathRight = new Path();
     this.activePath;
     this.rotatingLine = new RotatingLine();
@@ -66,27 +65,38 @@ function IngameState() {
 
         c.translate(0, 500);
 
-        this.background.draw();
-
-        this.rotatingLine.draw(c);
-        this.pathLeft.draw(c);
-        this.pathRight.draw(c);
+        this.background.drawSky();
+        this.background.drawHill();
+        this.drawWalls();
         this.levels.draw(c);
+
         c.translate(0, -500);
     };
 
-    //this.drawLevels = function() {
 
-        //c.setLineDash([5, 15]);
+    this.drawWalls = function() {
 
-        //c.beginPath();
-        //c.moveTo(0, 0);
-        //c.lineTo(game.WIDTH, 0);
-        //c.stroke();
+        c.lineWidth = 12;
+        c.lineJoin = "bevel";
+        c.strokeStyle = "#f2f0e9";
 
-        //var totalHeight = 0;
-        //c.setLineDash([]);
-    //};
+        c.beginPath();
+        this.pathLeft.draw(c);
+
+        if(this.rotatingLine.side == -1) {
+            this.rotatingLine.draw(c);
+        }
+        c.stroke();
+
+        c.beginPath();
+        this.pathRight.draw(c);
+        if(this.rotatingLine.side == 1) {
+            this.rotatingLine.draw(c);
+        }
+        c.stroke();
+
+        c.lineJoin = "miter";
+    };
 
     this.clear = function() {
         c.fillStyle = "#fff";

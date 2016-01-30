@@ -24,29 +24,28 @@ var Path = function() {
     this.heightIndex = [];
 }
 
-Path.prototype.draw = function(context) {
+Path.prototype.draw = function() {
     if (this.segments.length == 0) {
         return;
     }
     var first = this.segments[0];
-
-    context.beginPath();
-    context.moveTo(first.start.x, first.start.y);
-
-    for (segment of this.segments) {
-        context.lineTo(segment.end.x, segment.end.y);
+    c.beginPath();
+    c.moveTo(first.start.x, first.start.y);
+    for (var i = 0; i < this.segments.length; i++) {
+        var segment = this.segments[i];
+        c.lineTo(segment.end.x, segment.end.y);
     }
-
-    context.stroke();
-    this.drawHeightIndex(context);
+    c.stroke();
+    //this.drawHeightIndex();
 }
 
-Path.prototype.drawHeightIndex = function(context) {
-    for (var iHeightIndex of this.heightIndex) {
-        context.beginPath();
-        context.moveTo(iHeightIndex.x, iHeightIndex.y);
-        context.lineTo(300, iHeightIndex.y);
-        context.stroke();
+Path.prototype.drawHeightIndex = function() {
+    for (var i in this.heightIndex) {
+        var heightIndex = this.heightIndex[i];
+        c.beginPath();
+        c.moveTo(heightIndex.x, heightIndex.y);
+        c.lineTo(300, heightIndex.y);
+        c.stroke();
     }
 }
 
@@ -76,7 +75,8 @@ Path.prototype.addSegment = function(start, end, _offset) {
     start.y += offset;
     end.y += offset;
     this.segments.push(new Segment(start, end))
-    this.updateHeigthIndex();
+    //console.log(this);
+    this.updateHeightIndex();
 };
 
 Path.prototype.getHeight = function() {
@@ -85,9 +85,9 @@ Path.prototype.getHeight = function() {
 
 Path.prototype.getStartY = function() {
     return this.segments[0].start.y;
-}
+};
 
-Path.prototype.updateHeigthIndex = function() {
+Path.prototype.updateHeightIndex = function() {
     if (!this.segments.length > 0) {
         return;
     }
@@ -101,11 +101,11 @@ Path.prototype.updateHeigthIndex = function() {
             y: y
         });
     }
-}
+};
 
 Path.prototype.findSegmentForY = function(y) {
     return findSegmentForY(this, y);
-}
+};
 
 function comparePaths(path1, path2) {
     var height = Math.max(path1.getHeight(), path2.getHeight());

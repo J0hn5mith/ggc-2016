@@ -78,10 +78,7 @@ RotatingLine.prototype.handleBouncing = function(){
 
 
 RotatingLine.prototype.draw = function(context) {
-    c.beginPath();
-    c.moveTo(this.center.x, this.center.y);
     c.lineTo(this.tip.x, this.tip.y);
-    c.stroke();
 };
 
 
