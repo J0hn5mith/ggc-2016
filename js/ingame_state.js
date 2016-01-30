@@ -1,6 +1,7 @@
 function IngameState() {
 
     this.pathLeft = new Path();
+    this.pathLeftOriginal = new Path();
     this.pathRight = new Path();
     this.activePath;
     this.rotatingLine = new RotatingLine();
@@ -26,14 +27,14 @@ function IngameState() {
             y: 0
         }, {
             x: 150,
-            y: 0
+            y: -50
         });
         this.pathRight.addSegment({
             x: 450,
             y: 0
         }, {
             x: 450,
-            y: 0
+            y: -50
         });
 
         this.activePath = this.pathLeft;
@@ -70,34 +71,22 @@ function IngameState() {
         this.rotatingLine.draw(c);
         this.pathLeft.draw(c);
         this.pathRight.draw(c);
-
-        this.drawLevels();
-
+        this.levels.draw(c);
         c.translate(0, -500);
     };
 
-    this.drawLevels = function() {
+    //this.drawLevels = function() {
 
-        c.setLineDash([5, 15]);
+        //c.setLineDash([5, 15]);
 
-        c.beginPath();
-        c.moveTo(0, 0);
-        c.lineTo(game.WIDTH, 0);
-        c.stroke();
+        //c.beginPath();
+        //c.moveTo(0, 0);
+        //c.lineTo(game.WIDTH, 0);
+        //c.stroke();
 
-        var totalHeight = 0;
-        for(var i in this.levels.levels) {
-
-            var level = this.levels.levels[i];
-            totalHeight += level.height;
-
-            c.beginPath();
-            c.moveTo(0, -totalHeight);
-            c.lineTo(game.WIDTH, -totalHeight);
-            c.stroke();
-        }
-        c.setLineDash([]);
-    };
+        //var totalHeight = 0;
+        //c.setLineDash([]);
+    //};
 
     this.clear = function() {
         c.fillStyle = "#fff";
@@ -117,6 +106,7 @@ function IngameState() {
             this.currentLevel += 1;
         }
         this.toggleAttachment();
+        //comparePaths(this.pathLeft, this.pathLeftOriginal);
     };
 
 

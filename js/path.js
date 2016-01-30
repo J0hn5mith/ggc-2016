@@ -1,13 +1,20 @@
 var Segment = function(start, end) {
     this.start = start;
     this.end = end;
-}
+};
 
 Segment.prototype.draw = function(context) {
     context.beginPath();
     context.moveTo(this.start.x, this.start.y);
     context.lineTo(this.end.x, this.end.y);
     context.stroke();
+}
+
+Segment.prototype.projectY = function(y) {
+    var m = (this.end.x - this.start.x) / (this.end.y - this.start.y)
+    var x = this.end.x + (y - this.end.y) * m
+    return x;
+
 }
 
 
@@ -43,7 +50,8 @@ Path.prototype.drawHeightIndex = function(context) {
     }
 }
 
-Path.prototype.extend = function(position) {
+Path.prototype.extend = function(position, _offset) {
+    var offset = typeof _offset !== 'undefined'? _offset: 0;
     if (!this.segments.length > 0) {
         this.addSegment({
             x: 0,
@@ -51,14 +59,32 @@ Path.prototype.extend = function(position) {
         }, position);
     }
     var last = this.segments[this.segments.length - 1];
-    this.addSegment(last.end, position);
+    this.addSegment(last.end, position, offset);
 }
 
-Path.prototype.addSegment = function(start, end) {
-    this.segments.push(
-        new Segment(start, end)
-    )
+Path.prototype.extendByList = function(points, _offset) {
+    var offset = typeof _offset !== 'undefined'? _offset: 0;
+    if (this.segments.length > 0) {
+        for (point of points) {
+            this.extend(point, offset);
+        }
+    }
+}
+
+Path.prototype.addSegment = function(start, end, _offset) {
+    var offset = typeof _offset !== 'undefined'? _offset: 0;
+    start.y += offset;
+    end.y += offset;
+    this.segments.push(new Segment(start, end))
     this.updateHeigthIndex();
+};
+
+Path.prototype.getHeight = function() {
+    return this.segments[this.segments.length - 1].end.y;
+};
+
+Path.prototype.getStartY = function() {
+    return this.segments[0].start.y;
 }
 
 Path.prototype.updateHeigthIndex = function() {
@@ -66,44 +92,39 @@ Path.prototype.updateHeigthIndex = function() {
         return;
     }
 
-    var nextHeight;
-    var newHeight = this.segments[this.segments.length - 1].end.y;
-    if (!this.heightIndex.length > 0) {
-        nextHeight = 0;
-    } else {
-        var lastHeightIndex = this.heightIndex[this.heightIndex.length - 1];
-        var lastHeight;
-        if (lastHeightIndex.y % 10 != 0) {
-            nextHeight = lastHeightIndex + 10 - lastHeightIndex % 10;
-            this.heightIndex.pop();
-        } else {
-            lastHeight = lastHeightIndex.y;
-        }
-        nextHeight = lastHeight - 10;
-    }
-
-    for (var y = nextHeight; y > newHeight; y -= 10) {
-        segment = this.findSegmentForY(y);
-        var m = (segment.end.x - segment.start.x) / (segment.end.y - segment.start.y)
-        var x = segment.end.x + (y - segment.end.y) * m
+    this.heightIndex = [];
+    for (var y = this.getStartY(); y > this.getHeight(); y -= 10) {
+        var  segment = this.findSegmentForY(y);
+        var x = segment.projectY(y);
         this.heightIndex.push({
             x: x,
             y: y
         });
-
     }
 }
 
 Path.prototype.findSegmentForY = function(y) {
-    for (var segment of this.segments) {
-        if (segment.start.y >= y && segment.end.y <= y) {
-            return segment;
-        }
-    }
+    return findSegmentForY(this, y);
 }
 
 function comparePaths(path1, path2) {
-    for (segment of path1) {
-        // find closest 
+    var height = Math.max(path1.getHeight(), path2.getHeight());
+    var score = 0
+
+    for (var y = 0; y >= height; y--) {
+        var s1 = findSegmentForY(path1, y);
+        var s2 = findSegmentForY(path2, y);
+        var x1 = s1.projectY(y);
+        var x2 = s2.projectY(y);
+        score += 100 - Math.abs(x1 - x2)
+    }
+    console.log(score / 100);
+};
+
+function findSegmentForY(path, y) {
+    for (var segment of path.segments) {
+        if (segment.start.y >= y && segment.end.y <= y) {
+            return segment;
+        }
     }
 }
