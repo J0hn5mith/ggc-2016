@@ -65,9 +65,9 @@ function IngameState() {
                 this.rotatingLine.decreaseLength();
             }
             this.rotatingLine.update(timer.delta);
+            this.cameraY += this.cameraV * timer.delta;
+            this.facade.update();
         }
-        this.cameraY += this.cameraV * timer.delta;
-        this.facade.update();
     };
 
 

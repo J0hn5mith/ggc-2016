@@ -40,6 +40,17 @@ function Facade() {
             }
         }
 
+        var leftEnd = this.pathLeft.findLastPosition();
+        var rightEnd = this.pathRight.findLastPosition();
+
+        var topLimitM = 0;
+        if(rightEnd.x - leftEnd.x > 0) {
+            topLimitM = (rightEnd.y - leftEnd.y) / (rightEnd.x - leftEnd.x);
+        }
+
+        var topLimitY = leftEnd.y - (leftEnd.x * topLimitM);
+
+
         for(var y = startY; y <= endY; y++) {
             var xOffset = 0;
             if(y % 2 == 0) {
@@ -62,11 +73,45 @@ function Facade() {
                     path[4] = { x : (48 * (x + 1)) + xOffset, y : (-24 * y) - 12 };
                     path[5] = { x : (48 * (x + 1)) + xOffset, y : (-24 * y) };
 
-                    limit[0] =
+                    limit[0] = this.pathLeft.getHeightIndex((-24 * y)).x;
+                    limit[1] = this.pathLeft.getHeightIndex((-24 * y) - 12).x;
+                    limit[2] = this.pathLeft.getHeightIndex((-24 * y) - 24).x;
+                    limit[3] = this.pathRight.getHeightIndex((-24 * y) - 24).x;
+                    limit[4] = this.pathRight.getHeightIndex((-24 * y) - 12).x;
+                    limit[5] = this.pathRight.getHeightIndex((-24 * y)).x;
 
-                    this.bricks[y][x].path = path;
-                    brick.waiting = true;
-                    this.bricksWaiting.push({ x : x, y : y });
+                    if((path[0].x <= limit[5] || path[1].x <= limit[4] || path[2].x <= limit[3]) &&
+                        (path[3].x >= limit[2] || path[4].x >= limit[1] || path[5].x >= limit[0])) {
+
+                        if(path[2].y >= topLimitY + (path[2].x * topLimitM) &&
+                            path[3].y >= topLimitY + (path[3].x * topLimitM)) {
+
+                            for(var i = 0; i <= 2; i++) {
+                                if(path[i].x < limit[i]) {
+                                    path[i].x = limit[i];
+                                    if(path[i].x > path[5 - i].x) {
+                                        path[i].x = path[5 - i].x;
+                                        path[i].y = path[1].y;
+                                        path[5 - i].y = path[1].y;
+                                    }
+                                }
+                            }
+                            for(var i = 3; i <= 5; i++) {
+                                if(path[i].x > limit[i]) {
+                                    path[i].x = limit[i];
+                                    if(path[i].x < path[5 - i].x) {
+                                        path[i].x = path[5 - i].x;
+                                        path[i].y = path[4].y;
+                                        path[5 - i].y = path[4].y;
+                                    }
+                                }
+                            }
+
+                            this.bricks[y][x].path = path;
+                            brick.waiting = true;
+                            this.bricksWaiting.push({ x : x, y : y });
+                        }
+                    }
                 }
             }
         }
@@ -107,7 +152,7 @@ function Facade() {
                 for(var x = 0; x < 14; x++) {
                     var brick = brickRow[x];
                     if(brick.show) {
-                        c.fillStyle = "#333";
+                        c.fillStyle = "#bfbeb8";
                         c.beginPath();
                         c.moveTo(brick.path[0].x + offsets[0].x, brick.path[0].y + offsets[0].y);
                         for(var i = 1; i < 6; i++) {
@@ -115,7 +160,7 @@ function Facade() {
                         }
                         c.closePath();
                         c.fill();
-                        c.fillStyle = "#999";
+                        c.fillStyle = "#e0dfd7";
                         c.beginPath();
                         c.moveTo(brick.path[0].x - offsets[0].x, brick.path[0].y - offsets[0].y);
                         for(var i = 1; i < 6; i++) {
