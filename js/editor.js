@@ -6,6 +6,8 @@ function Editor() {
     this.color = "#ff0000";
     this.newShape = [];
 
+    this.showPoints = true;
+
 
     this.init = function() {
     };
@@ -24,7 +26,29 @@ function Editor() {
 
 
     this.addPos = function(pos) {
+        var closestPoint = this.getClosestPoint(pos);
+        if(distance(closestPoint.x, closestPoint.y, pos.x, pos.y) < 5) {
+            pos = closestPoint;
+        }
         this.newShape.push(pos);
+    };
+
+
+    this.getClosestPoint = function(pos) {
+        var closest = { x : -1000, y : -1000 };
+        var closestDst = 10000;
+        for(var i = 0; i < this.shapes.length; i++) {
+            var shape = this.shapes[i];
+            for(var j = 0; j < shape.shape.length; j++) {
+                var point = shape.shape[j];
+                var pDst = distance(pos.x, pos.y, point.x, point.y);
+                if(pDst < closestDst) {
+                    closest = { x : point.x, y : point.y };
+                    closestDst = pDst;
+                }
+            }
+        }
+        return closest;
     };
 
 
@@ -88,12 +112,25 @@ function Editor() {
     };
 
 
+    this.togglePoints = function() {
+        this.showPoints = !this.showPoints;
+    };
+
+
     this.draw = function() {
         for(var i = 0; i < this.shapes.length; i++) {
             var shape = this.shapes[i];
             this.drawShape(shape.shape, shape.color);
         }
         this.drawShape(this.newShape, this.color);
+
+        if(this.showPoints) {
+            for(var i = 0; i < this.shapes.length; i++) {
+                var shape = this.shapes[i];
+                this.drawPoints(shape.shape, 2);
+            }
+            this.drawPoints(this.newShape, 1);
+        }
     };
 
 
@@ -120,6 +157,27 @@ function Editor() {
             }
             c.closePath();
             c.fill();
+        }
+    };
+
+
+    this.drawPoints = function(shape, mode) {
+
+        if(mode == 1) {
+            for(var i = 0; i < shape.length; i++) {
+                c.fillStyle = "#000";
+                c.fillRect(shape[i].x - 3, shape[i].y - 3, 6, 6);
+                c.fillStyle = "#fff";
+                c.fillRect(shape[i].x - 2, shape[i].y - 2, 4, 4);
+            }
+
+        } else if(mode == 2) {
+            c.globalAlpha = 0.5;
+            c.fillStyle = "#000";
+            for(var i = 0; i < shape.length; i++) {
+                c.fillRect(shape[i].x - 2, shape[i].y - 2, 4, 4);
+            }
+            c.globalAlpha = 1.0;
         }
     };
 

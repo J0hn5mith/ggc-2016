@@ -1,6 +1,9 @@
 function EditorState() {
 
 
+	this.mousePos;
+
+
 	this.init = function() {
 		editor = new Editor();
 		editor.init();
@@ -11,11 +14,19 @@ function EditorState() {
 
 		jQuery("#game_box").append("<div id=\"editor_panel\"></div>");
 		jQuery("#editor_panel").append("<a id=\"editor_back\" href=\"javascript:void(0);\">Back</a>&nbsp;&nbsp;&nbsp;");
-		jQuery("#editor_panel").append("<a id=\"editor_change_color\" href=\"javascript:void(0);\">Change color</a>&nbsp;&nbsp;&nbsp;");
+		jQuery("#editor_panel").append("<a id=\"editor_change_color\" href=\"javascript:void(0);\">Change Color</a>&nbsp;&nbsp;&nbsp;");
 		jQuery("#editor_panel").append("<a id=\"editor_save\" href=\"javascript:void(0);\">Save</a>&nbsp;&nbsp;&nbsp;");
 		jQuery("#editor_panel").append("<a id=\"editor_print\" href=\"javascript:void(0);\">Print</a>&nbsp;&nbsp;&nbsp;");
 		jQuery("#editor_panel").append("<a id=\"editor_load\" href=\"javascript:void(0);\">Load</a>&nbsp;&nbsp;&nbsp;");
 		jQuery("#editor_panel").append("<a id=\"editor_clear\" href=\"javascript:void(0);\">Clear</a>&nbsp;&nbsp;&nbsp;");
+		jQuery("#editor_panel").append("<a id=\"editor_toggle_points\" href=\"javascript:void(0);\">Toggle Points</a>&nbsp;&nbsp;&nbsp;");
+		jQuery("#editor_panel").append("<br /><span id=\"editor_mouse_pos\"></span>");
+
+		this.mousePos = jQuery("#editor_mouse_pos");
+
+		keyboard.registerKeyUpHandler(Keyboard.BACKSPACE, function() {
+			editor.back();
+		});
 
 		jQuery("#editor_back").click(function() {
 			editor.back();
@@ -35,10 +46,13 @@ function EditorState() {
 		jQuery("#editor_clear").click(function() {
 			editor.clear();
 		});
+		jQuery("#editor_toggle_points").click(function() {
+			editor.togglePoints();
+		});
 
 		jQuery("#game_box").after("<div id=\"editor_output_box\"><form><textarea id=\"editor_output\"></textarea></form></div>");
 
-		mouse.registerUpArea("setPoint", 0, 20, game.WIDTH, game.HEIGHT - 20, function() {
+		mouse.registerUpArea("setPoint", 0, 40, game.WIDTH, game.HEIGHT - 40, function() {
 			var pos = { x : Math.round(mouse.x), y : Math.round(mouse.y) };
 			editor.addPos(pos);
 		});
@@ -53,6 +67,7 @@ function EditorState() {
 
 
 	this.update = function() {
+		this.mousePos.html("x: " + Math.round(mouse.x) + " / y: " + Math.round(mouse.y));
 	};
 
 
