@@ -15,6 +15,8 @@ var performanceMonitor;
 var mouse;
 var keyboard;
 
+var editor;
+
 
 jQuery(document).ready(function() {
 

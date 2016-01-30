@@ -21,7 +21,7 @@ function Mouse() {
 
 	this.init = function() {
 
-		jQuery("body").attr("unselectable", "on").css("user-select", "none").on("selectstart", false);
+		jQuery("#game_box").attr("unselectable", "on").css("user-select", "none").on("selectstart", false);
 
 		jQuery("body").mousemove(function(event) {
 			mouse.updatePosition(event);

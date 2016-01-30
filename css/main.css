@@ -15,7 +15,7 @@ img {
 
 #game_box {
 	position: relative;
-	width: 900px;
+	width: 600px;
 	height: 600px;
 	margin: 10px auto 0px;
 	border: 1px solid #000;
@@ -60,4 +60,13 @@ img {
 	background: #fff;
 	color: #000;
 	opacity: 0.3;
+}
+
+#editor_panel {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 600px;
+	height: 20px;
+	background: #ccc;
 }

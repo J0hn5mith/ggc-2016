@@ -1,15 +1,17 @@
 function Game() {
 
-	this.WIDTH = 900;
+	this.WIDTH = 600;
 	this.HEIGHT = 600;
 
 	this.DEBUG = true;
+	this.EDITOR = true;
 
 	this.TIME_PER_FRAME = 20;
 
 	this.STATES = {
 		"loading" : new LoadingState(),
-		"ingame" : new IngameState()
+		"ingame" : new IngameState(),
+		"editor" : new EditorState(),
 	};
 
 	this.INITIAL_STATE = "loading";
@@ -18,6 +20,8 @@ function Game() {
 
 	this.state = null;
 	this.nextState = null;
+
+	this.paused = false;
 
 
 	this.init = function() {

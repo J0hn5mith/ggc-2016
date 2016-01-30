@@ -6,7 +6,7 @@ function LoadingState() {
 	this.FONT_PERCENTAGE = 5;
 	this.FAKE_PERCENTAGE = 40;
 
-	this.FAKE_LOADING_TIME = 2.0; // adjust fixed loading time 
+	this.FAKE_LOADING_TIME = 0.2; // adjust fixed loading time
 
 	this.TIME_BEFORE_SOUND_LOADING_FAIL = 5.0;
 
@@ -49,7 +49,11 @@ function LoadingState() {
 			this.fakeLoadingCountdown -= timer.delta;
 			if(this.fakeLoadingCountdown < 0) {
 				preloadingManager.customPreload();
-				game.setState("ingame");
+				if(game.EDITOR) {
+					game.setState("editor");
+				} else {
+					game.setState("ingame");
+				}
 			}
 		}
 
