@@ -7,6 +7,7 @@ LevelComposite.prototype.heightOfLevel = function(levelNum){
     for(iLevel of this.levels){
         total += iLevel.height;
     }
+
     return total;
 }
 
