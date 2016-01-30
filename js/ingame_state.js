@@ -26,14 +26,14 @@ function IngameState() {
             y: 0
         }, {
             x: 150,
-            y: -50
+            y: 0
         });
         this.pathRight.addSegment({
             x: 450,
             y: 0
         }, {
             x: 450,
-            y: -50
+            y: 0
         });
 
         this.activePath = this.pathLeft;

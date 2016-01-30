@@ -69,7 +69,7 @@ Path.prototype.updateHeigthIndex = function() {
     var nextHeight;
     var newHeight = this.segments[this.segments.length - 1].end.y;
     if (!this.heightIndex.length > 0) {
-        nextHeight = BASE_LINE;
+        nextHeight = 0;
     } else {
         var lastHeightIndex = this.heightIndex[this.heightIndex.length - 1];
         var lastHeight;
