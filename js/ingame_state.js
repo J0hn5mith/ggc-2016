@@ -26,14 +26,14 @@ function IngameState() {
             y: 0
         }, {
             x: 150,
-            y: 0
+            y: -50
         });
         this.pathRight.addSegment({
             x: 450,
             y: 0
         }, {
             x: 450,
-            y: 0
+            y: -50
         });
 
         this.activePath = this.pathLeft;
@@ -65,23 +65,47 @@ function IngameState() {
 
         c.translate(0, 500);
 
-        this.background.draw();
-
-        this.rotatingLine.draw(c);
-        this.pathLeft.draw(c);
-        this.pathRight.draw(c);
-
+        this.background.drawSky();
         this.drawLevels();
+        this.background.drawHill();
+        this.drawWalls();
 
         c.translate(0, -500);
     };
 
-    this.drawLevels = function() {
 
-        c.setLineDash([5, 15]);
+    this.drawWalls = function() {
+
+        c.lineWidth = 12;
+        c.lineJoin = "bevel";
+        c.strokeStyle = "#f2f0e9";
 
         c.beginPath();
-        c.moveTo(0, 0);
+        this.pathLeft.draw(c);
+        if(this.rotatingLine.side == -1) {
+            this.rotatingLine.draw(c);
+        }
+        c.stroke();
+
+        c.beginPath();
+        this.pathRight.draw(c);
+        if(this.rotatingLine.side == 1) {
+            this.rotatingLine.draw(c);
+        }
+        c.stroke();
+
+        c.lineJoin = "miter";
+    };
+
+
+    this.drawLevels = function() {
+
+        c.lineWidth = 2;
+        c.strokeStyle = "#fff";
+        c.setLineDash([6, 14]);
+
+        c.beginPath();
+        c.moveTo(7, 0);
         c.lineTo(game.WIDTH, 0);
         c.stroke();
 
@@ -92,7 +116,7 @@ function IngameState() {
             totalHeight += level.height;
 
             c.beginPath();
-            c.moveTo(0, -totalHeight);
+            c.moveTo(7, -totalHeight);
             c.lineTo(game.WIDTH, -totalHeight);
             c.stroke();
         }

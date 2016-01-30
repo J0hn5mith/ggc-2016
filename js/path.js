@@ -17,29 +17,26 @@ var Path = function() {
     this.heightIndex = [];
 }
 
-Path.prototype.draw = function(context) {
+Path.prototype.draw = function() {
     if (this.segments.length == 0) {
         return;
     }
     var first = this.segments[0];
-
-    context.beginPath();
-    context.moveTo(first.start.x, first.start.y);
-
-    for (segment of this.segments) {
-        context.lineTo(segment.end.x, segment.end.y);
+    c.moveTo(first.start.x, first.start.y);
+    for (var i = 0; i < this.segments.length; i++) {
+        var segment = this.segments[i];
+        c.lineTo(segment.end.x, segment.end.y);
     }
-
-    context.stroke();
-    this.drawHeightIndex(context);
+    //this.drawHeightIndex();
 }
 
-Path.prototype.drawHeightIndex = function(context) {
-    for (var iHeightIndex of this.heightIndex) {
-        context.beginPath();
-        context.moveTo(iHeightIndex.x, iHeightIndex.y);
-        context.lineTo(300, iHeightIndex.y);
-        context.stroke();
+Path.prototype.drawHeightIndex = function() {
+    for (var i in this.heightIndex) {
+        var heightIndex = this.heightIndex[i];
+        c.beginPath();
+        c.moveTo(heightIndex.x, heightIndex.y);
+        c.lineTo(300, heightIndex.y);
+        c.stroke();
     }
 }
 
@@ -58,10 +55,10 @@ Path.prototype.addSegment = function(start, end) {
     this.segments.push(
         new Segment(start, end)
     )
-    this.updateHeigthIndex();
+    this.updateHeightIndex();
 }
 
-Path.prototype.updateHeigthIndex = function() {
+Path.prototype.updateHeightIndex = function() {
     if (!this.segments.length > 0) {
         return;
     }
