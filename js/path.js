@@ -42,6 +42,8 @@ Path.prototype.draw = function() {
 Path.prototype.drawHeightIndex = function() {
     for (var i in this.heightIndex) {
         var heightIndex = this.heightIndex[i];
+        c.strokeStyle = "#000";
+        c.lineWidth = 1;
         c.beginPath();
         c.moveTo(heightIndex.x, heightIndex.y);
         c.lineTo(300, heightIndex.y);
@@ -70,16 +72,16 @@ Path.prototype.extendByList = function(points, _offset) {
         this.addSegment(points[0], points[1], offset)
         points.splice(0, 2);
     }
-    for (var point of points) {
-        this.extend(point, offset);
+    for (var i = 0; i < points.length; i++) {
+        this.extend(points[i], offset);
     }
 }
 
 Path.prototype.addSegment = function(start, end, _offset) {
     var offset = typeof _offset !== 'undefined' ? _offset : 0;
-    start.y = start.y + offset;
-    end.y = end.y + offset;
-    this.segments.push(new Segment(start, end))
+    start.y += offset;
+    end.y += offset;
+    this.segments.push(new Segment(start, end));
     this.updateHeightIndex();
 };
 
@@ -97,7 +99,7 @@ Path.prototype.updateHeightIndex = function() {
     }
 
     this.heightIndex = [];
-    for (var y = this.getStartY(); y > this.getHeight(); y -= 10) {
+    for (var y = this.getStartY(); y > this.getHeight(); y -= 12) {
         var segment = this.findSegmentForY(y);
         var x = segment.projectY(y);
         this.heightIndex.push({
@@ -107,8 +109,20 @@ Path.prototype.updateHeightIndex = function() {
     }
 };
 
+
+Path.prototype.getHeightIndex = function(y) {
+    var i = limit(Math.round(-y / 12), 0, this.heightIndex.length - 1);
+    return this.heightIndex[i];
+};
+
+
 Path.prototype.findSegmentForY = function(y) {
     return findSegmentForY(this, y);
+};
+
+
+Path.prototype.findLastPosition = function() {
+    return this.segments[this.segments.length - 1].end;
 };
 
 function comparePaths(path1, path2) {
@@ -126,7 +140,8 @@ function comparePaths(path1, path2) {
 };
 
 function findSegmentForY(path, y) {
-    for (var segment of path.segments) {
+    for (var i = 0; i < path.segments.length; i++) {
+        var segment = path.segments[i];
         if (segment.start.y >= y && segment.end.y <= y) {
             return segment;
         }

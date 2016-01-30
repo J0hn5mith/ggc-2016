@@ -6,14 +6,14 @@ function Background() {
     };
 
 
-    this.drawSky = function() {
+    this.drawSky = function(cameraY) {
         var grad = c.createLinearGradient(0, -2000, 0, 50);
         grad.addColorStop(0, "#003");
         grad.addColorStop(0.5, "#09f");
         grad.addColorStop(1, "#9cf");
 
         c.fillStyle = grad;
-        c.fillRect(0, -500, 600, 600);
+        c.fillRect(0, -500 - cameraY, 600, 600);
     };
 
 
