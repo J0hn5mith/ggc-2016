@@ -4,9 +4,8 @@ var LevelComposite = function(levels){
 
 LevelComposite.prototype.heightOfLevel = function(levelNum){
     var total = 0;
-    for(iLevel in this.levels){
-        var level = this.levels[iLevel];
-        total += iLevel.height;
+    for(iLevel in this.levels) {
+        total += this.levels[iLevel].height;
     }
     return total;
 }

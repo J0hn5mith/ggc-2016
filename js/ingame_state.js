@@ -1,4 +1,3 @@
-BASE_LINE = 500;
 function IngameState() {
 
     this.pathLeft = new Path();
@@ -6,6 +5,7 @@ function IngameState() {
     this.activePath;
     this.rotatingLine = new RotatingLine();
 
+    this.background = new Background();
     this.levels = new LevelComposite();
     this.currentLevel = 0;
 
@@ -22,21 +22,23 @@ function IngameState() {
         });
 
         this.pathLeft.addSegment({
-            x: 200,
-            y: 500
+            x: 150,
+            y: 0
         }, {
-            x: 200,
-            y: 400
+            x: 150,
+            y: -50
         });
         this.pathRight.addSegment({
-            x: 400,
-            y: 500
+            x: 450,
+            y: 0
         }, {
-            x: 400,
-            y: 400
+            x: 450,
+            y: -50
         });
-        this.rotatingLine.middleX = 300;
-        this.attachToLeft();
+
+        this.activePath = this.pathLeft;
+        this.rotatingLine.side = -1;
+        this.rotatingLine.reset(this.activePath.segments[this.activePath.segments.length - 1].end);
     };
 
 
@@ -61,40 +63,40 @@ function IngameState() {
     this.draw = function() {
         this.clear();
 
+        c.translate(0, 500);
+
+        this.background.draw();
+
         this.rotatingLine.draw(c);
         this.pathLeft.draw(c);
         this.pathRight.draw(c);
-        c.beginPath();
-        c.moveTo(300, 0);
-        c.lineTo(300, 500);
-        c.stroke();
 
-        this.drawLevels(c);
+        this.drawLevels();
 
+        c.translate(0, -500);
     };
 
-    this.drawLevels = function(context) {
-        if(this.levels.levels.length == 0){
-            return;
-        }
+    this.drawLevels = function() {
+
+        c.setLineDash([5, 15]);
+
+        c.beginPath();
+        c.moveTo(0, 0);
+        c.lineTo(game.WIDTH, 0);
+        c.stroke();
+
         var totalHeight = 0;
+        for(var i in this.levels.levels) {
 
-            context.setLineDash([5, 15]);
-            context.beginPath();
-            context.moveTo(0,BASE_LINE);
-            context.lineTo(game.WIDTH, BASE_LINE);
-            context.stroke();
-
-        for(var i in this.levels.levels){
             var level = this.levels.levels[i];
-            context.beginPath();
             totalHeight += level.height;
-            context.moveTo(0,BASE_LINE-totalHeight);
-            context.lineTo(game.WIDTH, BASE_LINE-totalHeight);
-            context.stroke();
 
+            c.beginPath();
+            c.moveTo(0, -totalHeight);
+            c.lineTo(game.WIDTH, -totalHeight);
+            c.stroke();
         }
-        context.setLineDash([]);
+        c.setLineDash([]);
     };
 
     this.clear = function() {
@@ -104,12 +106,11 @@ function IngameState() {
 
 
     this.trigger = function() {
-        var tip = this.rotatingLine.tip;
         this.activePath.addSegment(
             this.rotatingLine.center,
             this.rotatingLine.tip
         );
-        if(this.rotatingLine.tip.y < BASE_LINE - this.levels.heightOfLevel(this.currentLevel)){
+        if(this.rotatingLine.tip.y < -this.levels.heightOfLevel(this.currentLevel)){
             this.activePath.level = this.currentLevel + 1;
         }
         if (this.pathLeft.level > this.currentLevel && this.pathRight.level > this.currentLevel){
@@ -122,25 +123,16 @@ function IngameState() {
     this.toggleAttachment = function() {
         if (this.activePath == this.pathRight) {
             if(this.pathLeft.level <= this.currentLevel) {
-                this.attachToLeft();
+                this.activePath = this.pathLeft;
+                this.rotatingLine.side = -1;
             }
         } else {
             if(this.pathRight.level <= this.currentLevel) {
-                this.attachToRight();
+                this.activePath = this.pathRight;
+                this.rotatingLine.side = 1;
             }
         }
-    };
-
-
-    this.attachToLeft = function() {
-        this.activePath = this.pathLeft;
-        this.rotatingLine.reset(-1, this.activePath.segments[this.activePath.segments.length - 1].end);
-    };
-
-
-    this.attachToRight = function() {
-        this.activePath = this.pathRight;
-        this.rotatingLine.reset(1, this.activePath.segments[this.activePath.segments.length - 1].end);
+        this.rotatingLine.reset(this.activePath.segments[this.activePath.segments.length - 1].end);
     };
 
 }
