@@ -4,7 +4,7 @@ function Game() {
 	this.HEIGHT = 600;
 
 	this.DEBUG = true;
-	this.EDITOR = true;
+	this.EDITOR = false;
 
 	this.TIME_PER_FRAME = 20;
 
