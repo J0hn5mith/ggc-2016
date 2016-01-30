@@ -50,32 +50,36 @@ Path.prototype.drawHeightIndex = function() {
 }
 
 Path.prototype.extend = function(position, _offset) {
-    var offset = typeof _offset !== 'undefined'? _offset: 0;
+    var offset = typeof _offset !== 'undefined' ? _offset : 0;
     if (!this.segments.length > 0) {
         this.addSegment({
             x: 0,
             y: 0
-        }, position);
+        }, position, offset);
     }
     var last = this.segments[this.segments.length - 1];
-    this.addSegment(last.end, position, offset);
+    position.y += offset;
+    //point.e.y += offset;
+    this.addSegment(last.end, position);
 }
 
 Path.prototype.extendByList = function(points, _offset) {
-    var offset = typeof _offset !== 'undefined'? _offset: 0;
-    if (this.segments.length > 0) {
-        for (point of points) {
-            this.extend(point, offset);
-        }
+    var offset = typeof _offset !== 'undefined' ? _offset : 0;
+
+    if (this.segments.length == 0) {
+        this.addSegment(points[0], points[1], offset)
+        points.splice(0, 2);
+    }
+    for (var point of points) {
+        this.extend(point, offset);
     }
 }
 
 Path.prototype.addSegment = function(start, end, _offset) {
-    var offset = typeof _offset !== 'undefined'? _offset: 0;
-    start.y += offset;
-    end.y += offset;
+    var offset = typeof _offset !== 'undefined' ? _offset : 0;
+    start.y = start.y + offset;
+    end.y = end.y + offset;
     this.segments.push(new Segment(start, end))
-    //console.log(this);
     this.updateHeightIndex();
 };
 
@@ -94,7 +98,7 @@ Path.prototype.updateHeightIndex = function() {
 
     this.heightIndex = [];
     for (var y = this.getStartY(); y > this.getHeight(); y -= 10) {
-        var  segment = this.findSegmentForY(y);
+        var segment = this.findSegmentForY(y);
         var x = segment.projectY(y);
         this.heightIndex.push({
             x: x,
