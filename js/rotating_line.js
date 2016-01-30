@@ -21,7 +21,7 @@ var RotatingLine = function() {
     this.progress = 0;
     this.angle = Math.PI;
     this.radius = 50;
-    this.speed = 4;
+    this.speed = 5;
     this.direction = 1;
     this.side = -1;
 };
