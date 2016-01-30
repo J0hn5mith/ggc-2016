@@ -13,5 +13,5 @@ LevelComposite.prototype.heightOfLevel = function(levelNum){
 
 
 var Level = function(){
-    this.height = 200;
+    this.height = 250;
 }

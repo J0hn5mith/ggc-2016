@@ -9,6 +9,11 @@ function IngameState() {
     this.levels = new LevelComposite();
     this.currentLevel = 0;
 
+    this.facade;
+
+    this.cameraY = 0;
+    this.cameraV = 5;
+
 
     this.init = function() {
 
@@ -36,6 +41,10 @@ function IngameState() {
             y: -50
         });
 
+        this.facade = new Facade();
+        this.facade.init(this.pathLeft, this.pathRight);
+        this.facade.addBricks(1, 0, -50);
+
         this.activePath = this.pathLeft;
         this.rotatingLine.side = -1;
         this.rotatingLine.reset(this.activePath.segments[this.activePath.segments.length - 1].end);
@@ -57,6 +66,8 @@ function IngameState() {
             }
             this.rotatingLine.update(timer.delta);
         }
+        this.cameraY += this.cameraV * timer.delta;
+        this.facade.update();
     };
 
 
@@ -64,12 +75,15 @@ function IngameState() {
         this.clear();
 
         c.translate(0, 500);
+        c.translate(0, this.cameraY);
 
-        this.background.drawSky();
+        this.background.drawSky(this.cameraY);
         this.drawLevels();
         this.background.drawHill();
+        this.facade.draw(this.cameraY);
         this.drawWalls();
 
+        c.translate(0, -this.cameraY);
         c.translate(0, -500);
     };
 
@@ -140,6 +154,7 @@ function IngameState() {
         if (this.pathLeft.level > this.currentLevel && this.pathRight.level > this.currentLevel){
             this.currentLevel += 1;
         }
+        this.facade.addBricks(this.rotatingLine.side, this.rotatingLine.center.y, this.rotatingLine.tip.y);
         this.toggleAttachment();
     };
 
