@@ -7,9 +7,12 @@ function Background() {
 
 
     this.draw = function() {
-        var grad = c.createLinearGradient(0, -1000, 0, 50);
+        var grad = c.createLinearGradient(0, -2000, 0, 50);
         grad.addColorStop(0,"black");
         grad.addColorStop(1,"white");
+
+        c.fillStyle = grad;
+        c.fillRect(-500, 0, 600, 600);
 
         c.translate(0, -500);
 
