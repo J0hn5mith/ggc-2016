@@ -78,7 +78,7 @@ function IngameState() {
         c.translate(0, this.cameraY);
 
         this.background.drawSky(this.cameraY);
-        this.drawLevels();
+        this.levels.draw(c);
         this.background.drawHill();
         this.facade.draw(this.cameraY);
         this.drawWalls();
@@ -96,6 +96,7 @@ function IngameState() {
 
         c.beginPath();
         this.pathLeft.draw(c);
+
         if(this.rotatingLine.side == -1) {
             this.rotatingLine.draw(c);
         }
@@ -109,32 +110,6 @@ function IngameState() {
         c.stroke();
 
         c.lineJoin = "miter";
-    };
-
-
-    this.drawLevels = function() {
-
-        c.lineWidth = 2;
-        c.strokeStyle = "#fff";
-        c.setLineDash([6, 14]);
-
-        c.beginPath();
-        c.moveTo(7, 0);
-        c.lineTo(game.WIDTH, 0);
-        c.stroke();
-
-        var totalHeight = 0;
-        for(var i in this.levels.levels) {
-
-            var level = this.levels.levels[i];
-            totalHeight += level.height;
-
-            c.beginPath();
-            c.moveTo(7, -totalHeight);
-            c.lineTo(game.WIDTH, -totalHeight);
-            c.stroke();
-        }
-        c.setLineDash([]);
     };
 
     this.clear = function() {
@@ -156,6 +131,7 @@ function IngameState() {
         }
         this.facade.addBricks(this.rotatingLine.side, this.rotatingLine.center.y, this.rotatingLine.tip.y);
         this.toggleAttachment();
+        //comparePaths(this.pathLeft, this.pathLeftOriginal);
     };
 
 
