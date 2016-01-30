@@ -35,6 +35,16 @@ function toRad(degrees) {
 	return degrees * 0.0174532;
 }
 
+function toCartesian(angle, radius, center) {
+    center = typeof center !== 'undefined' ? center :{x:0, y:0};
+
+    result = {};
+    result.x = center.x + Math.sin(angle) * radius;
+    result.y = center.y + Math.cos(angle) * radius;
+
+    return result;
+
+}
 
 function angleDelta(angleA, angleB) {
     var angleDelta = angleB - angleA;

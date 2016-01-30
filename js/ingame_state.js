@@ -14,29 +14,12 @@ function IngameState() {
 	this.demoImageRotation = 0;
 	this.demoImageX = 450;
 	this.demoImageY = 300;
+
+    this.rotatingLine = new RotatingLine();
 	
 
 	this.init = function() {
 		
-		// setup stuff here, examples:
-
-		this.demoParticleSystem1 = new ParticleSystem();
-		this.demoParticleSystem1.setType(1);
-		this.demoParticleSystem1.setEmitter(225, 300, 0);
-		this.demoParticleSystem1.setV(-50.0, 50.0, -250.0, -200.0, 0.0, 0.0);
-		this.demoParticleSystem1.setA(-10.0, 10.0, 0.0, 0.0, 0.0, 0.0);
-		this.demoParticleSystem1.setFriction(0.0, 100.0, 100.0);
-		this.demoParticleSystem1.setLife(1.0, 2.0);
-
-		this.demoParticleSystem2 = new ParticleSystem();
-		this.demoParticleSystem2.setMode(ParticleSystem.BURST_MODE);
-		this.demoParticleSystem2.setType(2);
-		this.demoParticleSystem2.setV(-240.0, 240.0, -240.0, 240.0, 0.0, 0.0);
-		this.demoParticleSystem2.setA(-6.0, 6.0, -6.0, 6.0, 0.0, 0.0);
-		this.demoParticleSystem2.setLife(0.5, 0.7);
-		this.demoParticleSystem2.setParticlesPerTick(50);
-
-		this.demoShaking = new Shaking();
 
 	};
 
@@ -87,6 +70,7 @@ function IngameState() {
 	this.update = function() {
 
 		// update stuff here:
+        this.rotatingLine.update(timer.delta);
 
 		if(!game.paused) {
 			this.demoImageRotation += 2.0 * timer.delta;
@@ -95,33 +79,15 @@ function IngameState() {
 
 
 	this.draw = function() {
+        this.clear();
 
-		// draw stuff here, examples:
-
-		c.fillStyle = "#fff";
-		c.fillRect(0, 0, game.WIDTH, game.HEIGHT);
+        this.rotatingLine.draw(c);
 		
-		for(var x = 0; x < 10; x++) {
-			for(var y = 0; y < 10; y++) {
-				if(this.demoMatrixFromImage[x][y] == "full") {
-					c.fillStyle = "#ddd";
-					c.fillRect(x * 20, y * 20, 20, 20);
-				}
-			}
-		}
-
-		this.demoText.draw();
-
-		this.demoShaking.apply();
-
-		img.drawRotated("test", this.demoImageX, this.demoImageY, 38, 38, this.demoImageRotation);
-
-		this.demoParticleSystem1.draw();
-		this.demoParticleSystem2.draw();
-		
-		img.draw("demoGeneratedTexture", 740, 440);
-
-		this.demoShaking.remove();
 	};
+
+    this.clear = function(){
+        c.fillStyle = "#fff";
+        c.fillRect(0, 0, game.WIDTH, game.HEIGHT);
+    }
 
 }
