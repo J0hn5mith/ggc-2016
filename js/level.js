@@ -1,8 +1,9 @@
 var LevelComposite = function(levels) {
     this.levels = [];
-    this.addLevel(LEVEL_1);
-    this.addLevel(LEVEL_2);
+    //this.addLevel(LEVEL_1);
+    //this.addLevel(LEVEL_2);
     this.addLevel(LEVEL_3);
+    this.addLevel(LEVEL_4);
 }
 
 LevelComposite.prototype.addLevel = function(level) {
