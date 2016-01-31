@@ -35,7 +35,7 @@ RotatingLine.prototype.update = function(timeDelta) {
 
 
 RotatingLine.prototype.reset = function(newCenter) {
-    this.angle = Math.PI;
+    this.angle = randFloat(Math.PI * 0.7, Math.PI * 1.3);
     this.center = newCenter;
     this.tip = toCartesian(this.angle, this.radius, this.center);
 };

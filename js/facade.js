@@ -160,7 +160,7 @@ function Facade() {
                         }
                         c.closePath();
                         c.fill();
-                        c.fillStyle = "#e0dfd7";
+                        c.fillStyle = "#d9d7d0";
                         c.beginPath();
                         c.moveTo(brick.path[0].x - offsets[0].x, brick.path[0].y - offsets[0].y);
                         for(var i = 1; i < 6; i++) {

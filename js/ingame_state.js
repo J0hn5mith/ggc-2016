@@ -78,6 +78,7 @@ function IngameState() {
         c.translate(0, this.cameraY);
 
         this.background.drawSky(this.cameraY);
+        this.drawBaseLine();
         this.levels.draw(c);
         this.background.drawHill();
         this.facade.draw(this.cameraY);
@@ -88,6 +89,17 @@ function IngameState() {
     };
 
 
+    this.drawBaseLine = function() {
+        c.lineWidth = 2;
+        c.beginPath();
+        c.setLineDash([2, 18]);
+        c.moveTo(9, 0);
+        c.lineTo(game.WIDTH, 0);
+        c.stroke();
+        c.setLineDash([]);
+    };
+
+
     this.drawWalls = function() {
 
         c.lineWidth = 12;
@@ -95,15 +107,14 @@ function IngameState() {
         c.strokeStyle = "#f2f0e9";
 
         c.beginPath();
-        this.pathLeft.draw(c);
-
+        this.pathLeft.draw(false);
         if(this.rotatingLine.side == -1) {
             this.rotatingLine.draw(c);
         }
         c.stroke();
 
         c.beginPath();
-        this.pathRight.draw(c);
+        this.pathRight.draw(false);
         if(this.rotatingLine.side == 1) {
             this.rotatingLine.draw(c);
         }
