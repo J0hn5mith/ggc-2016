@@ -135,7 +135,7 @@ function comparePaths(path1, path2) {
         var s2 = findSegmentForY(path2, y);
         var x1 = s1.projectY(y);
         var x2 = s2.projectY(y);
-        score += 100 - Math.abs(x1 - x2)
+        score += Math.max(100 - Math.abs(x1 - x2),0)
     }
     return score;
 };
