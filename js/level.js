@@ -3,6 +3,9 @@ var LevelComposite = function(ingameState) {
     this.addLevel(LEVEL_1);
     this.addLevel(LEVEL_2);
     this.addLevel(LEVEL_3);
+    this.addLevel(LEVEL_4);
+    this.addLevel(LEVEL_5);
+    this.addLevel(LEVEL_6);
     this.levels[0].start(ingameState);
 }
 
@@ -90,7 +93,7 @@ Level.prototype.start = function(ingameState) {
 
 var LEVEL_1 = {
     title : "Level 1",
-    cameraV : 6,
+    cameraV : 0,
     left : [
         {x: 150, y: 0},
         {x: 150, y: -50},
@@ -111,7 +114,7 @@ var LEVEL_1 = {
 
 var LEVEL_2 = {
     title : "Level 2",
-    cameraV : 12,
+    cameraV : 6,
     left : [
         {x: 150, y: 0},
         {x: 150, y: -50},
@@ -132,7 +135,7 @@ var LEVEL_2 = {
 
 var LEVEL_3 = {
     title : "Level 3",
-    cameraV : 18,
+    cameraV : 12,
     left: [
         {x: 150, y: 0},
         {x: 100, y: -50},
@@ -148,5 +151,84 @@ var LEVEL_3 = {
         {x: 450, y: -150},
         {x: 500, y: -200},
         {x: 450, y: -250}
+    ]
+};
+
+var LEVEL_4 = {
+    title : "Level 4",
+    cameraV : 18,
+    left: [
+        {x: 150, y: 0},
+        {x: 200, y: -50},
+        {x: 100, y: -100},
+        {x: 100, y: -150},
+        {x: 100, y: -200},
+        {x: 150, y: -250}
+    ],
+    right : [
+        {x: 450, y: 0},
+        {x: 500, y: -50},
+        {x: 400, y: -100},
+        {x: 400, y: -150},
+        {x: 400, y: -200},
+        {x: 450, y: -250}
+    ]
+};
+
+var LEVEL_5 = {
+    title : "Level 5",
+    cameraV : 18,
+    left: [
+        {x: 150, y: 0},
+        {x: 150, y: -50},
+        {x: 100, y: -50},
+        {x: 100, y: -100},
+        {x: 200, y: -100},
+        {x: 200, y: -150},
+        {x: 100, y: -200},
+        {x: 200, y: -200},
+        {x: 200, y: -250}
+    ],
+    right : [
+        {x: 450, y: 0},
+        {x: 450, y: -50},
+        {x: 500, y: -50},
+        {x: 500, y: -100},
+        {x: 400, y: -100},
+        {x: 400, y: -150},
+        {x: 500, y: -200},
+        {x: 400, y: -200},
+        {x: 400, y: -250}
+    ]
+};
+
+var LEVEL_6 = {
+    title : "Level 6",
+    cameraV : 18,
+    left: [
+        {x: 200, y: 0},
+        {x: 150, y: 0},
+        {x: 150, y: -50},
+        {x: 100, y: -50},
+        {x: 100, y: -100},
+        {x: 50, y: -100},
+        {x: 50, y: -150},
+        {x: 100, y: -150},
+        {x: 200, y: -150},
+        {x: 250, y: -200},
+        {x: 200, y: -200},
+        {x: 200, y: -250}
+    ],
+    right : [
+        {x: 400, y: 0},
+        {x: 450, y: 0},
+        {x: 450, y: -50},
+        {x: 500, y: -50},
+        {x: 500, y: -100},
+        {x: 400, y: -100},
+        {x: 400, y: -150},
+        {x: 500, y: -200},
+        {x: 400, y: -200},
+        {x: 400, y: -250}
     ]
 };
