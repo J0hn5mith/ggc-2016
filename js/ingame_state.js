@@ -12,7 +12,7 @@ function IngameState() {
     this.facade;
 
     this.cameraY = 0;
-    this.cameraV = 5;
+    this.cameraV = 0;
 
 
     this.init = function() {
@@ -138,7 +138,7 @@ function IngameState() {
             this.activePath.level = this.currentLevel + 1;
         }
         if (this.pathLeft.level > this.currentLevel && this.pathRight.level > this.currentLevel){
-            var leve = this.levels.completeLevel(this);
+            var score = this.levels.completeLevel(this);
             this.currentLevel += 1;
         }
         this.facade.addBricks(this.rotatingLine.side, this.rotatingLine.center.y, this.rotatingLine.tip.y);
