@@ -1,8 +1,9 @@
-var LevelComposite = function(levels) {
+var LevelComposite = function(ingameState) {
     this.levels = [];
     this.addLevel(LEVEL_1);
     this.addLevel(LEVEL_2);
     this.addLevel(LEVEL_3);
+    this.levels[0].start(ingameState);
 }
 
 LevelComposite.prototype.addLevel = function(level) {
@@ -30,6 +31,9 @@ LevelComposite.prototype.heightOfLevel = function(levelNum) {
 
 LevelComposite.prototype.completeLevel = function(ingameState) {
     var curLevel = this.levels[ingameState.currentLevel];
+    if(ingameState.currentLevel < this.levels.length) {
+        this.levels[ingameState.currentLevel + 1].start(ingameState);
+    }
     return curLevel.complete(ingameState);
 }
 
@@ -74,9 +78,14 @@ Level.prototype.draw = function() {
 
 Level.prototype.complete = function(ingameState){
     var score = comparePaths(this.pathLeft, ingameState.pathLeft);
-    ingameState.cameraV = this.cameraV;
     return score;
-}
+};
+
+
+Level.prototype.start = function(ingameState) {
+    ingameState.showLevelTitle(this.title);
+    ingameState.cameraV = this.cameraV;
+};
 
 
 var LEVEL_1 = {

@@ -1,18 +1,24 @@
 function IngameState() {
 
-    this.pathLeft = new Path();
-    this.pathRight = new Path();
+    this.pathLeft;
+    this.pathRight;
     this.activePath;
-    this.rotatingLine = new RotatingLine();
+    this.rotatingLine;
 
     this.background = new Background();
-    this.levels = new LevelComposite();
+
+    this.levels;
     this.currentLevel = 0;
 
     this.facade;
 
     this.cameraY = 0;
     this.cameraV = 0;
+
+    this.levelTitle = "";
+    this.levelTitleTimer = 0.0;
+
+    this.tutorialTimer = 0.0;
 
 
     this.init = function() {
@@ -21,6 +27,14 @@ function IngameState() {
 
 
     this.show = function() {
+
+        this.pathLeft = new Path();
+        this.pathRight = new Path();
+        this.rotatingLine = new RotatingLine();
+
+        this.levels = new LevelComposite(this);
+        this.currentLevel = 0;
+
         var caller = this;
         keyboard.registerKeyDownHandler(Keyboard.SPACE_BAR, function() {
             caller.trigger();
@@ -48,6 +62,8 @@ function IngameState() {
         this.activePath = this.pathLeft;
         this.rotatingLine.side = -1;
         this.rotatingLine.reset(this.activePath.segments[this.activePath.segments.length - 1].end);
+
+        this.tutorialTimer = 12.0;
     };
 
 
@@ -67,6 +83,20 @@ function IngameState() {
             this.rotatingLine.update(timer.delta);
             this.cameraY += this.cameraV * timer.delta;
             this.facade.update();
+
+            if(this.levelTitleTimer > 0.0) {
+                this.levelTitleTimer -= timer.delta;
+                if(this.levelTitleTimer < 0.0) {
+                    this.levelTitleTimer = 0.0;
+                }
+            }
+
+            if(this.tutorialTimer > 0.0) {
+                this.tutorialTimer -= timer.delta;
+                if(this.tutorialTimer < 0.0) {
+                    this.tutorialTimer = 0.0;
+                }
+            }
         }
     };
 
@@ -86,6 +116,24 @@ function IngameState() {
 
         c.translate(0, -this.cameraY);
         c.translate(0, -500);
+
+        if(this.levelTitleTimer > 0.0) {
+            c.globalAlpha = limit(this.levelTitleTimer, 0.0, 1.0);
+            c.font = "30px Arial";
+            c.fillStyle = "#fff";
+            c.textAlign = "center";
+            c.fillText(this.levelTitle, 300, 50);
+            c.globalAlpha = 1.0;
+        }
+
+        if(this.tutorialTimer > 0.0) {
+            c.globalAlpha = limit(this.tutorialTimer, 0.0, 1.0);
+            c.font = "18px Arial";
+            c.fillStyle = "#fff";
+            c.textAlign = "center";
+            c.fillText("Place wall with SPACE. Change size with UP/DOWN.", 300, 583);
+            c.globalAlpha = 1.0;
+        }
     };
 
 
@@ -126,6 +174,12 @@ function IngameState() {
     this.clear = function() {
         c.fillStyle = "#fff";
         c.fillRect(0, 0, game.WIDTH, game.HEIGHT);
+    };
+
+
+    this.showLevelTitle = function(title) {
+        this.levelTitle = title;
+        this.levelTitleTimer = 4.0;
     };
 
 
