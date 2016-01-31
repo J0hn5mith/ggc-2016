@@ -123,15 +123,15 @@ function IngameState() {
             this.rotatingLine.center,
             this.rotatingLine.tip
         );
-        if(this.rotatingLine.tip.y < -this.levels.heightOfLevel(this.currentLevel)){
+        if(this.rotatingLine.tip.y < this.levels.heightOfLevel(this.currentLevel)){
             this.activePath.level = this.currentLevel + 1;
         }
         if (this.pathLeft.level > this.currentLevel && this.pathRight.level > this.currentLevel){
+            var leve = this.levels.completeLevel(this);
             this.currentLevel += 1;
         }
         this.facade.addBricks(this.rotatingLine.side, this.rotatingLine.center.y, this.rotatingLine.tip.y);
         this.toggleAttachment();
-        //comparePaths(this.pathLeft, this.pathLeftOriginal);
     };
 
 

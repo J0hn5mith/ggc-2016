@@ -126,17 +126,18 @@ Path.prototype.findLastPosition = function() {
 };
 
 function comparePaths(path1, path2) {
+    var min = Math.min(path1.getStartY(), path2.getStartY());
     var height = Math.max(path1.getHeight(), path2.getHeight());
     var score = 0
 
-    for (var y = 0; y >= height; y--) {
+    for (var y = min; y >= height; y--) {
         var s1 = findSegmentForY(path1, y);
         var s2 = findSegmentForY(path2, y);
         var x1 = s1.projectY(y);
         var x2 = s2.projectY(y);
         score += 100 - Math.abs(x1 - x2)
     }
-    console.log(score / 100);
+    return score;
 };
 
 function findSegmentForY(path, y) {
