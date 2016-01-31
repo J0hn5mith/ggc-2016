@@ -41,6 +41,8 @@ var Level = function(levelJson, number) {
     this.baseHeight = this.number * this.height * -1;
     this.pathLeft = new Path();
     this.pathRight = new Path();
+    this.title = levelJson.title;
+    this.cameraV = levelJson.cameraV;
 
     this.pathLeft.extendByList(
             levelJson.left, 
@@ -73,15 +75,17 @@ Level.prototype.draw = function() {
 
 Level.prototype.complete = function(ingameState){
     var score = comparePaths(this.pathLeft, ingameState.pathLeft);
-    console.log(score / 100);
+    ingameState.cameraV = this.cameraV;
     return score;
 }
 
 
 var LEVEL_1 = {
+    title : "Level 1",
+    cameraV : 6,
     left : [
         {x: 150, y: 0},
-        {x: 150, y: -050},
+        {x: 150, y: -50},
         {x: 125, y: -100},
         {x: 125, y: -150},
         {x: 150, y: -200},
@@ -89,7 +93,7 @@ var LEVEL_1 = {
     ],
     right : [
         {x: 450, y: 0},
-        {x: 450, y: -050},
+        {x: 450, y: -50},
         {x: 475, y: -100},
         {x: 475, y: -150},
         {x: 450, y: -200},
@@ -98,6 +102,8 @@ var LEVEL_1 = {
 };
 
 var LEVEL_2 = {
+    title : "Level 2",
+    cameraV : 12,
     left : [
         {x: 150, y: 0},
         {x: 150, y: -50},
@@ -117,6 +123,8 @@ var LEVEL_2 = {
 };
 
 var LEVEL_3 = {
+    title : "Level 3",
+    cameraV : 18,
     left: [
         {x: 150, y: 0},
         {x: 100, y: -50},
