@@ -1,9 +1,11 @@
 var LevelComposite = function(levels) {
     this.levels = [];
-    //this.addLevel(LEVEL_1);
-    //this.addLevel(LEVEL_2);
+    this.addLevel(LEVEL_1);
+    this.addLevel(LEVEL_2);
     this.addLevel(LEVEL_3);
     this.addLevel(LEVEL_4);
+    this.addLevel(LEVEL_5);
+    this.addLevel(LEVEL_6);
 }
 
 LevelComposite.prototype.addLevel = function(level) {
@@ -140,5 +142,84 @@ var LEVEL_3 = {
         {x: 450, y: -150},
         {x: 500, y: -200},
         {x: 450, y: -250}
+    ]
+};
+
+var LEVEL_4 = {
+    title : "Level 3",
+    cameraV : 18,
+    left: [
+        {x: 150, y: 0},
+        {x: 200, y: -50},
+        {x: 100, y: -100},
+        {x: 100, y: -150},
+        {x: 100, y: -200},
+        {x: 150, y: -250}
+    ],
+    right : [
+        {x: 450, y: 0},
+        {x: 500, y: -50},
+        {x: 400, y: -100},
+        {x: 400, y: -150},
+        {x: 400, y: -200},
+        {x: 450, y: -250}
+    ]
+};
+
+var LEVEL_5 = {
+    title : "Level 3",
+    cameraV : 18,
+    left: [
+        {x: 150, y: 0},
+        {x: 150, y: -50},
+        {x: 100, y: -50},
+        {x: 100, y: -100},
+        {x: 200, y: -100},
+        {x: 200, y: -150},
+        {x: 100, y: -200},
+        {x: 200, y: -200},
+        {x: 200, y: -250}
+    ],
+    right : [
+        {x: 450, y: 0},
+        {x: 450, y: -50},
+        {x: 500, y: -50},
+        {x: 500, y: -100},
+        {x: 400, y: -100},
+        {x: 400, y: -150},
+        {x: 500, y: -200},
+        {x: 400, y: -200},
+        {x: 400, y: -250}
+    ]
+};
+
+var LEVEL_6 = {
+    title : "Level 6",
+    cameraV : 18,
+    left: [
+        {x: 200, y: 0},
+        {x: 150, y: 0},
+        {x: 150, y: -50},
+        {x: 100, y: -50},
+        {x: 100, y: -100},
+        {x: 50, y: -100},
+        {x: 50, y: -150},
+        {x: 100, y: -150},
+        {x: 200, y: -150},
+        {x: 250, y: -200},
+        {x: 200, y: -200},
+        {x: 200, y: -250}
+    ],
+    right : [
+        {x: 400, y: 0},
+        {x: 450, y: 0},
+        {x: 450, y: -50},
+        {x: 500, y: -50},
+        {x: 500, y: -100},
+        {x: 400, y: -100},
+        {x: 400, y: -150},
+        {x: 500, y: -200},
+        {x: 400, y: -200},
+        {x: 400, y: -250}
     ]
 };
