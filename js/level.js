@@ -9,6 +9,7 @@ LevelComposite.prototype.addLevel = function(level) {
     var level = new Level(level, this.levels.length);
     this.levels.push(level);
 }
+
 LevelComposite.prototype.draw = function(context) {
     for (var iLevel in this.levels) {
         var level = this.levels[iLevel];
@@ -43,17 +44,22 @@ var Level = function(levelJson, number) {
             );
 }
 
-Level.prototype.draw = function(context) {
+Level.prototype.draw = function() {
+
+    c.lineWidth = 2;
     c.beginPath();
-    c.setLineDash([5, 15]);
+    c.setLineDash([2, 18]);
     var height = this.baseHeight - this.height;
-    c.moveTo(0, height);
+    c.moveTo(9, height);
     c.lineTo(game.WIDTH, height);
     c.stroke();
     c.setLineDash([]);
 
-    this.pathLeft.draw(context);
-    this.pathRight.draw(context);
+    c.lineWidth = 3;
+    c.setLineDash([10, 10]);
+    this.pathLeft.draw(true);
+    this.pathRight.draw(true);
+    c.setLineDash([]);
 };
 
 

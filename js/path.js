@@ -24,19 +24,22 @@ var Path = function() {
     this.heightIndex = [];
 }
 
-Path.prototype.draw = function() {
+Path.prototype.draw = function(startEnd) {
     if (this.segments.length == 0) {
         return;
     }
     var first = this.segments[0];
-    c.beginPath();
+    if(startEnd) {
+        c.beginPath();
+    }
     c.moveTo(first.start.x, first.start.y);
     for (var i = 0; i < this.segments.length; i++) {
         var segment = this.segments[i];
         c.lineTo(segment.end.x, segment.end.y);
     }
-    c.stroke();
-    //this.drawHeightIndex();
+    if(startEnd) {
+        c.stroke();
+    }
 }
 
 Path.prototype.drawHeightIndex = function() {
