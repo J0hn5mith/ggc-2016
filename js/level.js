@@ -19,11 +19,19 @@ LevelComposite.prototype.draw = function(context) {
 LevelComposite.prototype.heightOfLevel = function(levelNum) {
     var total = 0;
     for (iLevel in this.levels) {
-        total += this.levels[iLevel].height;
+        if(iLevel > levelNum){
+            console.log(total);
+            return total;
+        }
+        total -= this.levels[iLevel].height;
     }
     return total;
 }
 
+LevelComposite.prototype.completeLevel = function(ingameState) {
+    var curLevel = this.levels[ingameState.currentLevel];
+    return curLevel.complete(ingameState);
+}
 
 var Level = function(levelJson, number) {
     this.height = 250;
@@ -61,6 +69,12 @@ Level.prototype.draw = function() {
     this.pathRight.draw(true);
     c.setLineDash([]);
 };
+
+Level.prototype.complete = function(ingameState){
+    var score = comparePaths(this.pathLeft, ingameState.pathLeft);
+    console.log(score / 100);
+    return score;
+}
 
 
 var LEVEL_1 = {
